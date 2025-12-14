@@ -1,4 +1,5 @@
 use clap::{Parser, Subcommand};
+use std::path::PathBuf;
 
 ///neatd - automatic folder organizer daemon
 #[derive(Parser, Debug)]
@@ -12,7 +13,15 @@ pub struct Cli {
 #[derive(Subcommand, Debug)]
 pub enum Commands {
     /// Create default config at ~/.neatd/config.toml
-    Init,
+    Init {
+        /// Set custom path for config file
+        #[arg(long)]
+        path: Option<PathBuf>,
+
+        /// force to rewrite the config file
+        #[arg(long)]
+        force: bool,
+    },
 
     /// Start neatd (watch folders and organize)
     Run {

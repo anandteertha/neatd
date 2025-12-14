@@ -1,14 +1,19 @@
 mod args;
+mod config_file_data;
+mod init;
 
 use args::{Cli, Commands};
 use clap::Parser;
+use config_file_data::config_file_data;
+use init::create_or_override_config_file;
 
 fn main() {
     let cli: Cli = Cli::parse();
 
     match cli.command {
-        Some(Commands::Init) => {
+        Some(Commands::Init { path, force }) => {
             println!("Noiceee you have initialized.. now you can edit the config file!!!");
+            let _ = create_or_override_config_file("config.toml", config_file_data());
         }
         Some(Commands::DryRun) => {
             println!("Noiceee you just want to see what files would be affected!!!");

@@ -1,0 +1,186 @@
+use chrono::Local;
+
+pub fn config_file_data() -> String {
+    let now = Local::now();
+
+    // Format the time as a string (e.g., "2025-12-14 06:18:12 PM")
+    let current_time = now.format("%Y-%m-%d %I:%M:%S %p").to_string();
+    format!(
+        r#"# =========================
+# neatd configuration
+# =========================
+
+version = 1
+created_by = "neatd"
+created_at = {:?}
+
+[general]
+# "dry_run" prints what would happen; "apply" performs changes
+mode = "dry_run"
+
+# default action if a rule doesn't specify one: "move" | "copy" | "hardlink" | "symlink"
+default_action = "move"
+
+recursive = true
+follow_symlinks = false
+# max_depth = 8
+
+# Stop after organizing this many files in one run (safety brake)
+max_files_per_run = 500
+
+[paths]
+# One or more roots to organize
+roots = [
+  "/Users/you/Downloads"
+]
+
+# Where to store state (locks, cache, history, etc.)
+state_dir = "/Users/you/.neatd"
+
+# Optional: if nothing matches, send files here
+quarantine = "/Users/you/Downloads/_neatd_quarantine"
+
+[ignore]
+# Common junk / transient patterns
+globs = [
+  "**/.git/**",
+  "**/node_modules/**",
+  "**/.DS_Store",
+  "**/Thumbs.db",
+  "**/*.crdownload",
+  "**/*.part",
+  "**/*.tmp"
+]
+
+# ignore hidden files like ".env", ".zshrc"
+ignore_hidden = false
+
+# ignore these file extensions entirely (no dot)
+extensions = ["swp", "bak"]
+
+[naming]
+# Whether to normalize filenames when moving (optional, can be rule-specific too)
+normalize_names = false
+# lowercase = true
+# replace_spaces_with = "_"
+
+[layout]
+# Optional: apply a default folder layout under each destination
+# If empty, rules can specify exact destinations without date folders.
+# date_source: "modified" | "created" | "accessed"
+date_source = "modified"
+# date_format uses chrono-style or your own implementation; pick one approach and be consistent
+# Example outcome: 2025/12
+date_format = "%Y/%m"
+
+[log]
+level = "info"
+# file = "/Users/you/.neatd/neatd.log"
+
+[report]
+# "text" | "json"
+format = "text"
+# output = "-"  # stdout
+# output = "/Users/you/.neatd/last_run_report.txt"
+
+[safety]
+# Never move/copy files outside roots -> destinations (prevents unsafe paths)
+require_within_roots = true
+
+# Disallow any delete behavior unless explicitly enabled
+allow_delete = false
+
+# =========================
+# Rules
+# =========================
+# Rules are evaluated in order (top to bottom). First match wins.
+# Each rule can define match conditions and an action.
+
+[[rules]]
+name = "Images"
+enabled = true
+priority = 10
+
+[rules.match]
+extensions = ["png", "jpg", "jpeg", "gif", "webp", "heic", "tiff"]
+
+[rules.action]
+type = "move"
+to = "images"
+# Optional: create date folders under destination using [layout]
+use_layout = true
+
+[[rules]]
+name = "Videos"
+enabled = true
+priority = 20
+
+[rules.match]
+extensions = ["mp4", "mov", "mkv", "avi", "webm"]
+
+[rules.action]
+type = "move"
+to = "videos"
+use_layout = true
+
+[[rules]]
+name = "Documents"
+enabled = true
+priority = 30
+
+[rules.match]
+extensions = ["pdf", "doc", "docx", "ppt", "pptx", "xls", "xlsx", "txt", "md"]
+
+[rules.action]
+type = "move"
+to = "documents"
+use_layout = true
+
+[[rules]]
+name = "Archives"
+enabled = true
+priority = 40
+
+[rules.match]
+extensions = ["zip", "rar", "7z", "tar", "gz"]
+
+[rules.action]
+type = "move"
+to = "archives"
+use_layout = false
+
+[[rules]]
+name = "Code"
+enabled = true
+priority = 50
+
+[rules.match]
+extensions = ["rs", "py", "js", "ts", "java", "go", "cpp", "c", "h", "cs"]
+# You can also support:
+# globs = ["**/*.rs", "**/*.py"]
+# filename_regex = "^(README|LICENSE).*"
+
+[rules.action]
+type = "move"
+to = "code"
+use_layout = false
+
+[[rules]]
+name = "Fallback"
+enabled = true
+priority = 999
+
+[rules.match]
+# empty match means "match anything not matched earlier"
+any = true
+
+[rules.action]
+type = "move"
+to = "other"
+use_layout = false
+
+            
+            "#,
+        current_time
+    )
+}
