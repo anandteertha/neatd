@@ -13,7 +13,7 @@ fn main() {
     match cli.command {
         Some(Commands::Init { path, force }) => {
             println!("Noiceee you have initialized.. now you can edit the config file!!!");
-            let _ = create_or_override_config_file("config.toml", config_file_data());
+            _ = create_or_override_config_file("config.toml", config_file_data());
         }
         Some(Commands::DryRun) => {
             println!("Noiceee you just want to see what files would be affected!!!");
