@@ -11,16 +11,7 @@ pub fn create_or_override_config_file(
     is_force: bool,
     path: Option<PathBuf>,
 ) -> Result<()> {
-    // let path: String =
-
-    // create neatd directory will create a .neatd folder and return its path irrespective of the OS
-    // let file_path = if path == "".to_string() {
-    //     create_neatd_directory().join(filename)
-    // } else {
-    //     path.into()
-    // };
-
-    let file_path = create_neatd_directory().join(filename);
+    let file_path = path.unwrap_or(create_neatd_directory().join(filename));
 
     if is_force {
         let file = OpenOptions::new().write(true).open(&file_path);
@@ -40,6 +31,7 @@ pub fn create_or_override_config_file(
     } else {
         // It will throw "already exists" error on the file if it already exists
         // Otherwise will create a new config.toml file
+        println!("path is {:?}", file_path);
         let file = OpenOptions::new()
             .write(true)
             .create_new(true)
