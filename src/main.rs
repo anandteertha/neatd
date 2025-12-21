@@ -1,11 +1,18 @@
 mod args;
+mod config;
 mod config_file_data;
+mod directory;
 mod init;
+mod parse;
+
+use std::path::PathBuf;
 
 use args::{Cli, Commands};
 use clap::Parser;
 use config_file_data::config_file_data;
+use directory::{get_file_path, get_hom_directory};
 use init::create_or_override_config_file;
+use parse::read_config;
 
 fn main() {
     let cli: Cli = Cli::parse();
@@ -29,6 +36,11 @@ fn main() {
                     "okay soo you decided to run the neatd as a background daemon.. cool cool cool!!!"
                 );
             }
+        }
+        Some(Commands::Validate) => {
+            let config_file_path: PathBuf = get_file_path(get_hom_directory(), "config.toml");
+            _ = read_config(config_file_path);
+            println!("nicee you decided to validate.. following good practice! thank youu!!");
         }
         None => {
             println!("Usage: neatd <command> [options]\nRun `neatd --help` for more information.")

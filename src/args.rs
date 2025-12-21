@@ -39,4 +39,11 @@ pub enum Commands {
 
     /// Show whether daemon is running and summary stats
     Status,
+
+    /// Validate if the config file generated is correct or not and prints a formatted output
+    #[command(long_about = "
+    Validate your configuration and rules without making changes.
+    Checks config syntax, required fields, paths/permissions, and rule conflicts.
+    Reports actionable errors and warnings; exits non-zero on failure.")]
+    Validate,
 }

@@ -1,6 +1,4 @@
-pub mod directory;
-
-use directory::create_neatd_directory;
+use crate::directory::create_neatd_directory;
 use std::fs::OpenOptions;
 use std::io::{ErrorKind, Result, Write};
 use std::path::PathBuf;

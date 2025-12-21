@@ -15,33 +15,16 @@ created_by = "neatd"
 created_at = {:?}
 
 [general]
-# "dry_run" prints what would happen; "apply" performs changes
 mode = "dry_run"
-
-# default action if a rule doesn't specify one: "move" | "copy" | "hardlink" | "symlink"
 default_action = "move"
-
 recursive = true
-follow_symlinks = false
-# max_depth = 8
-
-# Stop after organizing this many files in one run (safety brake)
-max_files_per_run = 500
 
 [paths]
-# One or more roots to organize
-roots = [
-  "/Users/you/Downloads"
-]
-
-# Where to store state (locks, cache, history, etc.)
+roots = ["/Users/you/Downloads"]
 state_dir = "/Users/you/.neatd"
-
-# Optional: if nothing matches, send files here
 quarantine = "/Users/you/Downloads/_neatd_quarantine"
 
 [ignore]
-# Common junk / transient patterns
 globs = [
   "**/.git/**",
   "**/node_modules/**",
@@ -49,52 +32,28 @@ globs = [
   "**/Thumbs.db",
   "**/*.crdownload",
   "**/*.part",
-  "**/*.tmp"
+  "**/*.tmp",
 ]
-
-# ignore hidden files like ".env", ".zshrc"
 ignore_hidden = false
-
-# ignore these file extensions entirely (no dot)
 extensions = ["swp", "bak"]
 
 [naming]
-# Whether to normalize filenames when moving (optional, can be rule-specific too)
 normalize_names = false
-# lowercase = true
-# replace_spaces_with = "_"
 
 [layout]
-# Optional: apply a default folder layout under each destination
-# If empty, rules can specify exact destinations without date folders.
-# date_source: "modified" | "created" | "accessed"
 date_source = "modified"
-# date_format uses chrono-style or your own implementation; pick one approach and be consistent
-# Example outcome: 2025/12
 date_format = "%Y/%m"
 
 [log]
 level = "info"
-# file = "/Users/you/.neatd/neatd.log"
 
 [report]
-# "text" | "json"
 format = "text"
-# output = "-"  # stdout
-# output = "/Users/you/.neatd/last_run_report.txt"
 
 [safety]
-# Never move/copy files outside roots -> destinations (prevents unsafe paths)
 require_within_roots = true
-
-# Disallow any delete behavior unless explicitly enabled
 allow_delete = false
 
-# =========================
-# Rules
-# =========================
-# Rules are evaluated in order (top to bottom). First match wins.
-# Each rule can define match conditions and an action.
 
 [[rules]]
 name = "Images"
@@ -107,7 +66,6 @@ extensions = ["png", "jpg", "jpeg", "gif", "webp", "heic", "tiff"]
 [rules.action]
 type = "move"
 to = "images"
-# Optional: create date folders under destination using [layout]
 use_layout = true
 
 [[rules]]
@@ -156,9 +114,6 @@ priority = 50
 
 [rules.match]
 extensions = ["rs", "py", "js", "ts", "java", "go", "cpp", "c", "h", "cs"]
-# You can also support:
-# globs = ["**/*.rs", "**/*.py"]
-# filename_regex = "^(README|LICENSE).*"
 
 [rules.action]
 type = "move"
@@ -171,7 +126,6 @@ enabled = true
 priority = 999
 
 [rules.match]
-# empty match means "match anything not matched earlier"
 any = true
 
 [rules.action]

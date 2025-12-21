@@ -8,3 +8,5 @@ chrono = { version = "*" }
 clap = { version = "4.5.53", features = ["derive"] }
 os_info = { version = "*" }
 dirs = { version = "*" }
+toml = { version = "*" }
+serde = { version = "*", features = ["derive"] }
