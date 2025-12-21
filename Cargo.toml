@@ -10,3 +10,4 @@ os_info = { version = "*" }
 dirs = { version = "*" }
 toml = { version = "*" }
 serde = { version = "*", features = ["derive"] }
+colored = { version = "*" }

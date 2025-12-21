@@ -45,5 +45,16 @@ pub enum Commands {
     Validate your configuration and rules without making changes.
     Checks config syntax, required fields, paths/permissions, and rule conflicts.
     Reports actionable errors and warnings; exits non-zero on failure.")]
-    Validate,
+    Validate {
+        /// Validate custom path config file
+        #[arg(long)]
+        path: Option<PathBuf>,
+    },
+
+    /// Display your config in a nice colored fashion
+    PrintConfig {
+        /// display custom path config file contents
+        #[arg(long)]
+        path: Option<PathBuf>,
+    },
 }

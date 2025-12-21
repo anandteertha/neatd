@@ -5,14 +5,15 @@ mod directory;
 mod init;
 mod parse;
 
-use std::path::PathBuf;
-
 use args::{Cli, Commands};
 use clap::Parser;
 use config_file_data::config_file_data;
 use directory::{get_file_path, get_hom_directory};
 use init::create_or_override_config_file;
 use parse::read_config;
+use std::path::PathBuf;
+
+use crate::config::display::display_config;
 
 fn main() {
     let cli: Cli = Cli::parse();
@@ -37,10 +38,26 @@ fn main() {
                 );
             }
         }
-        Some(Commands::Validate) => {
-            let config_file_path: PathBuf = get_file_path(get_hom_directory(), "config.toml");
-            _ = read_config(config_file_path);
-            println!("nicee you decided to validate.. following good practice! thank youu!!");
+        Some(Commands::Validate { path }) => {
+            let config_file_path: PathBuf =
+                path.unwrap_or(get_file_path(get_hom_directory(), "config.toml"));
+            _ = read_config(&config_file_path);
+        }
+        Some(Commands::PrintConfig { path }) => {
+            let config_file_path: PathBuf =
+                path.unwrap_or(get_file_path(get_hom_directory(), "config.toml"));
+            let config = read_config(&config_file_path);
+            match config {
+                Ok(config_value) => {
+                    display_config(&config_value);
+                }
+                Err(error) => {
+                    eprintln!(
+                        "Failed to read config at {:?}: {:?}",
+                        &config_file_path, error
+                    );
+                }
+            }
         }
         None => {
             println!("Usage: neatd <command> [options]\nRun `neatd --help` for more information.")

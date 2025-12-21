@@ -1,8 +1,5 @@
 use dirs::home_dir;
-use std::{
-    fs::create_dir_all,
-    path::{Path, PathBuf},
-};
+use std::{fs::create_dir_all, path::PathBuf};
 
 pub fn create_neatd_directory() -> PathBuf {
     let neatd_dir = get_hom_directory();
