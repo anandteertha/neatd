@@ -4,6 +4,7 @@ mod config_file_data;
 mod directory;
 mod init;
 mod parse;
+mod run;
 
 use args::{Cli, Commands};
 use clap::Parser;
