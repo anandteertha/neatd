@@ -1,4 +1,4 @@
-use crate::config::Config;
+use crate::run::config::config::Config;
 use colored::Colorize;
 use std::{fs::read_to_string, path::PathBuf};
 use toml::from_str;

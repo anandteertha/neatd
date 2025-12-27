@@ -1,4 +1,4 @@
-use super::{ActionType, Config, ExecutionMode, LogType, ReportType};
+use super::config::{ActionType, Config, ExecutionMode, LogType, ReportType};
 use colored::*;
 
 fn section(title: &str) {
@@ -84,14 +84,22 @@ pub fn display_config(config: &Config) {
     );
 
     section("PATHS");
-    println!("{} {}", key("quarantine"), config.paths.quarantine.green());
-    println!("{} {}", key("state_dir"), config.paths.state_dir.green());
+    println!(
+        "{} {}",
+        key("quarantine"),
+        config.paths.quarantine.to_string_lossy().green()
+    );
+    println!(
+        "{} {}",
+        key("state_dir"),
+        config.paths.state_dir.to_string_lossy().green()
+    );
     println!("{}", key("roots"));
     if config.paths.roots.is_empty() {
         println!("  {}", "<none>".bright_black().italic());
     } else {
         for r in &config.paths.roots {
-            println!("  {} {}", "•".bright_black(), r.green());
+            println!("  {} {}", "•".bright_black(), r.to_string_lossy().green());
         }
     }
 
@@ -107,7 +115,11 @@ pub fn display_config(config: &Config) {
         println!("  {}", "<none>".bright_black().italic());
     } else {
         for ext in &config.ignore.extensions {
-            println!("  {} {}", "•".bright_black(), ext.magenta());
+            println!(
+                "  {} {}",
+                "•".bright_black(),
+                ext.to_string_lossy().magenta()
+            );
         }
     }
 
@@ -116,7 +128,7 @@ pub fn display_config(config: &Config) {
         println!("  {}", "<none>".bright_black().italic());
     } else {
         for g in &config.ignore.globs {
-            println!("  {} {}", "•".bright_black(), g.magenta());
+            println!("  {} {}", "•".bright_black(), g.to_string_lossy().magenta());
         }
     }
 
@@ -227,7 +239,11 @@ pub fn display_config(config: &Config) {
             }
             Some(a) => {
                 println!("    {} {}", key("type"), action_val(&a.r#type));
-                println!("    {} {}", key("to"), opt_str(Some(a.to.as_str())).green());
+                println!(
+                    "    {} {}",
+                    key("to"),
+                    opt_str(Some(&a.to.to_string_lossy())).green()
+                );
                 println!("    {} {}", key("use_layout"), bool_val(a.use_layout));
             }
         }
