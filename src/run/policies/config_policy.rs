@@ -10,7 +10,7 @@ pub struct ConfigPolicy {
 }
 
 impl ConfigPolicy {
-    pub fn new(config: &Config, base_dir: &Path) -> Self {
+    pub fn new(&mut self, config: &Config, base_dir: &Path) -> Self {
         let includes: &Vec<PathBuf> = &config.paths.roots;
         let mut excludes: Vec<PathBuf> = Vec::new();
 
