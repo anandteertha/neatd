@@ -1,12 +1,17 @@
-use std::{collections::HashSet, path::PathBuf};
+use std::{
+    collections::HashSet,
+    path::{Path, PathBuf},
+};
 
 pub struct EffectivePolicy {
     effective_includes: Vec<PathBuf>,
     effective_excludes: Vec<PathBuf>,
+    effective_includes_hash: HashSet<PathBuf>,
+    effective_excludes_hash: HashSet<PathBuf>,
 }
 
 impl EffectivePolicy {
-    pub fn skip_paths(
+    fn skip_paths(
         &mut self,
         vector_paths: &[PathBuf],
         is_include: bool,
@@ -39,7 +44,7 @@ impl EffectivePolicy {
         kept_set
     }
 
-    pub fn retain(vector_paths: &[PathBuf], kept_set: &HashSet<PathBuf>) -> HashSet<PathBuf> {
+    fn retain(vector_paths: &[PathBuf], kept_set: &HashSet<PathBuf>) -> HashSet<PathBuf> {
         let mut other_set: HashSet<PathBuf> = HashSet::new();
         for path in vector_paths {
             for ancestor in path.ancestors() {
@@ -56,7 +61,7 @@ impl EffectivePolicy {
         &mut self,
         mut include_roots: Vec<PathBuf>,
         mut exclude_roots: Vec<PathBuf>,
-    ) {
+    ) -> &EffectivePolicy {
         // Initialize effective include to an empty vector
         self.effective_includes = Vec::new();
         self.effective_excludes = Vec::new();
@@ -77,6 +82,10 @@ impl EffectivePolicy {
 
         // skip paths and build effective exclude policy roots
         updated_excluded_roots.sort_by_key(|excluded_root| excluded_root.components().count());
-        self.skip_paths(&updated_excluded_roots, false, HashSet::new());
+        let excluded_hash = self.skip_paths(&updated_excluded_roots, false, HashSet::new());
+
+        self.effective_includes_hash = kept_set;
+        self.effective_excludes_hash = excluded_hash;
+        self
     }
 }
