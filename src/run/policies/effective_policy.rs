@@ -1,7 +1,4 @@
-use std::{
-    collections::HashSet,
-    path::{Path, PathBuf},
-};
+use std::{collections::HashSet, path::PathBuf};
 
 pub struct EffectivePolicy {
     pub effective_includes: Vec<PathBuf>,

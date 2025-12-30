@@ -14,6 +14,8 @@ use parse::read_config;
 use run::config::display::display_config;
 use std::path::PathBuf;
 
+use crate::run::scanner::walk_policy_setup;
+
 fn main() {
     let cli: Cli = Cli::parse();
 
@@ -23,7 +25,17 @@ fn main() {
             _ = create_or_override_config_file("config.toml", config_file_data(), force, path);
         }
         Some(Commands::DryRun) => {
-            println!("Noiceee you just want to see what files would be affected!!!");
+            let config_file_path: PathBuf = get_file_path(get_hom_directory(), "config.toml");
+            let config = read_config(&config_file_path);
+            match config {
+                Ok(config_value) => walk_policy_setup(&config_value, &config_file_path),
+                Err(error) => {
+                    eprintln!(
+                        "Failed to read config at {:?}: {:?}",
+                        &config_file_path, error
+                    );
+                }
+            }
         }
         Some(Commands::Status) => {
             println!("Okay so you want to see if daemon is running in background or not!!!");

@@ -11,19 +11,14 @@ use crate::run::{
 };
 use std::{
     fs::read_dir,
-    io::Result,
     path::{Path, PathBuf},
 };
 
-pub fn walk_policy_setup(config: &Config, base_dir: &Path) -> Result<()> {
+pub fn walk_policy_setup(config: &Config, base_dir: &Path) {
     let effective_policy: EffectivePolicy = setup_policy_for_walk(config, base_dir);
     for path in &effective_policy.effective_includes {
-        // for each path recursively go in each directory iff you should_descend
         recurse_dirs(&effective_policy, path);
-        // for each path you encounter iif you should_process then log what needs to be done for this file
     }
-    Ok(())
-    // return the log entries
 }
 
 fn recurse_dirs(effective_policy: &EffectivePolicy, path: &Path) -> Log {
