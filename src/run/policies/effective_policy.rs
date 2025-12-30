@@ -4,10 +4,10 @@ use std::{
 };
 
 pub struct EffectivePolicy {
-    effective_includes: Vec<PathBuf>,
-    effective_excludes: Vec<PathBuf>,
-    effective_includes_hash: HashSet<PathBuf>,
-    effective_excludes_hash: HashSet<PathBuf>,
+    pub effective_includes: Vec<PathBuf>,
+    pub effective_excludes: Vec<PathBuf>,
+    pub effective_includes_hash: HashSet<PathBuf>,
+    pub effective_excludes_hash: HashSet<PathBuf>,
 }
 
 impl EffectivePolicy {

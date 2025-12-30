@@ -5,12 +5,12 @@ use std::{
 };
 
 pub struct ConfigPolicy {
-    include_roots: Vec<PathBuf>,
-    exclude_roots: Vec<PathBuf>,
+    pub include_roots: Vec<PathBuf>,
+    pub exclude_roots: Vec<PathBuf>,
 }
 
 impl ConfigPolicy {
-    pub fn new(&mut self, config: &Config, base_dir: &Path) -> Self {
+    pub fn new(config: &Config, base_dir: &Path) -> Self {
         let includes: &Vec<PathBuf> = &config.paths.roots;
         let mut excludes: Vec<PathBuf> = Vec::new();
 

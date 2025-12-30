@@ -1,10 +1,14 @@
-use std::{io::Error, path::PathBuf, time::SystemTime};
+use std::{
+    io::Error,
+    path::{Path, PathBuf},
+    time::SystemTime,
+};
 
-pub struct FsEntry {
-    path: PathBuf,
-    kind: FileKind,
-    metadata: Option<EntryMetaData>,
-    errors: Vec<EntryError>,
+pub struct FsEntry<'a> {
+    pub path: &'a Path,
+    pub kind: FileKind,
+    pub metadata: Option<EntryMetaData>,
+    pub errors: Vec<EntryError>,
 }
 
 pub enum FileKind {
@@ -15,21 +19,21 @@ pub enum FileKind {
 }
 
 pub struct EntryMetaData {
-    size_bytes: Option<u64>,
-    modified: Option<SystemTime>,
-    created: Option<SystemTime>,
-    accessed: Option<SystemTime>,
-    readonly: Option<bool>,
-    mime: Option<String>,
-    canonical_path: Option<PathBuf>,
+    pub size_bytes: Option<u64>,
+    pub modified: Option<SystemTime>,
+    pub created: Option<SystemTime>,
+    pub accessed: Option<SystemTime>,
+    pub readonly: Option<bool>,
+    pub mime: Option<String>,
+    pub canonical_path: Option<PathBuf>,
 }
 
 pub struct EntryError {
-    path: PathBuf,
-    operation: EntryOp,
-    source: Error,
-    severity: Severity,
-    outcome: Outcome,
+    pub path: PathBuf,
+    pub operation: EntryOp,
+    pub source: Error,
+    pub severity: Severity,
+    pub outcome: Outcome,
 }
 
 pub enum EntryOp {
