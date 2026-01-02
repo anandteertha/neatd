@@ -1,11 +1,7 @@
-use std::{
-    io::Error,
-    path::{Path, PathBuf},
-    time::SystemTime,
-};
+use std::{io::Error, path::PathBuf, time::SystemTime};
 
-pub struct FsEntry<'a> {
-    pub path: &'a Path,
+pub struct FsEntry {
+    pub path: PathBuf,
     pub kind: FileKind,
     pub metadata: Option<EntryMetaData>,
     pub errors: Vec<EntryError>,

@@ -23,7 +23,7 @@ pub fn walk_policy_setup(config: &Config, base_dir: &Path) {
 
 fn recurse_dirs(effective_policy: &EffectivePolicy, path: &Path) -> Log {
     let mut fs_entry: FsEntry = FsEntry {
-        path,
+        path: path.to_path_buf(),
         kind: FileKind::Other,
         errors: Vec::new(),
         metadata: None,

@@ -5,6 +5,7 @@ mod init;
 mod parse;
 mod run;
 
+use crate::run::scanner::walk_policy_setup;
 use args::{Cli, Commands};
 use clap::Parser;
 use config_file_data::config_file_data;
@@ -13,8 +14,6 @@ use init::create_or_override_config_file;
 use parse::read_config;
 use run::config::display::display_config;
 use std::path::PathBuf;
-
-use crate::run::scanner::walk_policy_setup;
 
 fn main() {
     let cli: Cli = Cli::parse();
