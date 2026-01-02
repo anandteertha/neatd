@@ -27,7 +27,7 @@ pub struct EntryMetaData {
 pub struct EntryError {
     pub path: PathBuf,
     pub operation: EntryOp,
-    pub source: Error,
+    pub source: Option<Error>,
     pub severity: Severity,
     pub outcome: Outcome,
 }
