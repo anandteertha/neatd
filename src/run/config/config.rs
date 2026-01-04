@@ -110,6 +110,21 @@ pub struct Match {
     pub any: Option<bool>,
 }
 
+impl Match {
+    pub fn new() -> Self {
+        Self {
+            extensions: Some(Vec::new()),
+            any: Some(false),
+        }
+    }
+}
+
+impl Default for Match {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[derive(Deserialize, Debug)]
 pub struct Action {
     pub r#type: ActionType,

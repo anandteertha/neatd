@@ -1,4 +1,5 @@
 pub mod log;
+pub mod process_file;
 pub mod set_error;
 pub mod set_kind;
 
@@ -29,28 +30,33 @@ fn recurse_dirs(effective_policy: &EffectivePolicy, path: &Path, config: &Config
         errors: Vec::new(),
         metadata: None,
     };
+
     for entry in read_dir(&path).expect("Cannot read the directories from the given path") {
-        let entry = entry;
         match entry {
             Ok(entry) => {
                 let entry_path: PathBuf = entry.path();
-                let can_descend: bool = should_descend(effective_policy, &entry_path);
-                let can_process: bool = should_process(effective_policy, &entry_path);
+
                 set_entry_kind(&mut fs_entry, &entry_path);
+
                 if entry_path.is_dir() {
-                    if can_descend {
+                    if should_descend(effective_policy, &entry_path) {
                         return recurse_dirs(effective_policy, path, config);
                     }
-                    parse_errors(&entry_path, None);
+
+                    fs_entry.errors.push(parse_errors(&entry_path, None));
+
                     return Log::CannotDescend;
                 } else {
-                    if can_process {
+                    if should_process(effective_policy, &entry_path) {
                         return Log::Success;
                     }
-                    parse_errors(&entry_path, None);
+
+                    fs_entry.errors.push(parse_errors(&entry_path, None));
+
                     return Log::CannotProcess;
                 }
             }
+
             Err(error) => {
                 let entry_error = EntryError {
                     path: path.to_path_buf(),
@@ -59,7 +65,7 @@ fn recurse_dirs(effective_policy: &EffectivePolicy, path: &Path, config: &Config
                     severity: Severity::Error,
                     outcome: Outcome::Skipped,
                 };
-                parse_errors(path, Some(entry_error));
+                fs_entry.errors.push(parse_errors(path, Some(entry_error)));
                 return Log::UnknownError;
             }
         }
