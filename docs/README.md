@@ -93,6 +93,23 @@ This directory contains comprehensive design, architecture, and usage documentat
 
   **Recommended for**: Developers, project managers, stakeholders.
 
+- **[USER_STORIES.md](./USER_STORIES.md)** - Detailed user stories for 100% completion:
+  - 59 detailed user stories organized by epic
+  - Task breakdowns for each story
+  - Acceptance criteria
+  - Dependencies and priorities
+  - Estimated completion timeline
+
+  **Recommended for**: Developers, project managers, product owners, contributors.
+
+- **[stories/](./stories/)** - Individual story files:
+  - Each story in its own file (59 stories total)
+  - Organized by epic (epic0 through epic7)
+  - Easy to reference and track individual stories
+  - See [stories/README.md](./stories/README.md) for structure
+
+  **Recommended for**: Developers working on specific stories, project tracking tools.
+
 ## Quick Navigation
 
 ### For Users
