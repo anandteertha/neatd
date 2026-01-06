@@ -3,6 +3,19 @@
 **Epic**: 0  
 **File**: EPIC0-1
 
+## 📚 Learning Resources
+
+**New to Rust?** Check out these implementation guides:
+1. **[Quick Start Guide](./EPIC0-1-QUICK-START.md)** ⭐ **START HERE!** - Get started in 5 steps
+2. **[Full Implementation Guide](./EPIC0-1-IMPLEMENTATION-GUIDE.md)** - Complete guide with all concepts and examples
+3. **[Code Template](./EPIC0-1-CODE-TEMPLATE.rs)** - Copy-paste starter code
+
+**Recommended Order**:
+1. Read Quick Start Guide (15 minutes)
+2. Study Rust basics from Quick Start (30-60 minutes)
+3. Copy Code Template and adapt it
+4. Refer to Full Guide when you need more details
+
 ---
 
 ### Story 0.1: Enhanced Configuration Validation
