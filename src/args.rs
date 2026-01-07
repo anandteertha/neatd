@@ -44,11 +44,15 @@ pub enum Commands {
     #[command(long_about = "
     Validate your configuration and rules without making changes.
     Checks config syntax, required fields, paths/permissions, and rule conflicts.
-    Reports actionable errors and warnings; exits non-zero on failure.")]
+    Reports actionable errors and warnings; exits non-zero on failure. By default
+    paths are checked if they exist or not")]
     Validate {
         /// Validate custom path config file
         #[arg(long)]
         path: Option<PathBuf>,
+        /// check if paths exist
+        #[arg(long)]
+        check_paths: bool,
     },
 
     /// Display your config in a nice colored fashion

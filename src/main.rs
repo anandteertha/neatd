@@ -2,8 +2,8 @@ mod args;
 mod config_file_data;
 mod directory;
 mod init;
-mod parse;
 mod run;
+mod validate;
 
 use crate::run::scanner::walk_policy_setup;
 use args::{Cli, Commands};
@@ -11,9 +11,9 @@ use clap::Parser;
 use config_file_data::config_file_data;
 use directory::{get_file_path, get_hom_directory};
 use init::create_or_override_config_file;
-use parse::read_config;
 use run::config::display::display_config;
 use std::path::PathBuf;
+use validate::parse::read_config;
 
 fn main() {
     let cli: Cli = Cli::parse();
@@ -48,7 +48,7 @@ fn main() {
                 );
             }
         }
-        Some(Commands::Validate { path }) => {
+        Some(Commands::Validate { path, check_paths }) => {
             let config_file_path: PathBuf =
                 path.unwrap_or(get_file_path(get_hom_directory(), "config.toml"));
             _ = read_config(&config_file_path);
