@@ -1,11 +1,7 @@
-use std::{
-    collections::HashSet,
-    default,
-    path::{self, Path, PathBuf},
-};
+use std::collections::HashSet;
 
 use crate::run::{
-    config::config::{Config, Match, Rule},
+    config::config::{Config, Match},
     entries::fs_entry::FsEntry,
 };
 

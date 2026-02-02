@@ -1,3 +1,3 @@
 pub mod error;
 pub mod parse;
-mod validator;
+pub mod validator;

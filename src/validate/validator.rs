@@ -1,11 +1,10 @@
-use std::{
-    collections::HashSet,
-    path::{Path, PathBuf},
-};
-
 use crate::{
     run::config::config::{Config, ConfigPaths, Rule},
     validate::error::{ValidationError, ValidationResult},
+};
+use std::{
+    collections::HashSet,
+    path::{Path, PathBuf},
 };
 
 pub fn validate_config(config: &Config, check_paths: bool) -> ValidationResult {
@@ -72,6 +71,18 @@ fn validate_rules(rules: &[Rule], errors: &mut Vec<ValidationError>) {
                         .to_string(),
                 });
             }
+        } else {
+            errors.push(ValidationError::RuleError {
+                rule_name: rule.name.clone(),
+                reason: "Rule missing match criteria".to_string(),
+            });
+        }
+
+        if !matches!(&rule.action, Some(_)) {
+            errors.push(ValidationError::RuleError {
+                rule_name: rule.name.clone(),
+                reason: "Rule missing action".to_string(),
+            });
         }
     }
 }

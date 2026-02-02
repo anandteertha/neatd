@@ -5,14 +5,17 @@ mod init;
 mod run;
 mod validate;
 
-use crate::run::scanner::walk_policy_setup;
+use crate::{
+    run::scanner::walk_policy_setup,
+    validate::{error::ValidationError, validator::validate_config},
+};
 use args::{Cli, Commands};
 use clap::Parser;
 use config_file_data::config_file_data;
 use directory::{get_file_path, get_hom_directory};
 use init::create_or_override_config_file;
 use run::config::display::display_config;
-use std::path::PathBuf;
+use std::{error, path::PathBuf};
 use validate::parse::read_config;
 
 fn main() {
@@ -20,8 +23,8 @@ fn main() {
 
     match cli.command {
         Some(Commands::Init { path, force }) => {
-            println!("Noiceee you have initialized.. now you can edit the config file!!!");
             _ = create_or_override_config_file("config.toml", config_file_data(), force, path);
+            println!("Noiceee you have initialized.. now you can edit the config file!!!");
         }
         Some(Commands::DryRun) => {
             let config_file_path: PathBuf = get_file_path(get_hom_directory(), "config.toml");
@@ -51,7 +54,22 @@ fn main() {
         Some(Commands::Validate { path, check_paths }) => {
             let config_file_path: PathBuf =
                 path.unwrap_or(get_file_path(get_hom_directory(), "config.toml"));
-            _ = read_config(&config_file_path);
+            let config = read_config(&config_file_path);
+            match config {
+                Ok(config) => {
+                    let result = validate_config(&config, check_paths);
+                    match result {
+                        Ok(_) => {}
+                        Err(errors) => {
+                            eprintln!("Validation Failed!");
+                            for (index, error) in errors.iter().enumerate() {
+                                eprintln!("{}. {}", index, error.to_string());
+                            }
+                        }
+                    };
+                }
+                Err(_) => eprintln!("encountered an error"),
+            }
         }
         Some(Commands::PrintConfig { path }) => {
             let config_file_path: PathBuf =
